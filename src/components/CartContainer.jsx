@@ -100,23 +100,24 @@ const CartContainer = () => {
             ))}
           </div>
 
-          <div className="mt-8 flex justify-between items-center">
-            <div className="text-lg font-semibold">Total: ${calculateTotal()}</div>
-            <div className="flex space-x-4">
-              <Link
-                to="/" 
-                className="bg-gray-700 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-gray-800 transition-colors duration-200"
-              >
-                Seguir comprando
-              </Link>
+          <div className="mt-8 flex items-center justify-between">
+            <Link
+              to="/" 
+              className="bg-gray-700 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-gray-800 transition-colors duration-200"
+            >
+              Seguir comprando
+            </Link>
 
-              <button
-                onClick={clearCart}
-                className="bg-red-500 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-red-600 transition-colors duration-200"
-              >
-                Vaciar carrito
-              </button>
+            <div className="text-lg font-semibold text-center">
+              Total: ${calculateTotal()}
             </div>
+
+            <button
+              onClick={clearCart}
+              className="bg-red-500 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-red-600 transition-colors duration-200"
+            >
+              Vaciar carrito
+            </button>
           </div>
 
           <div className="mt-6 text-center">
