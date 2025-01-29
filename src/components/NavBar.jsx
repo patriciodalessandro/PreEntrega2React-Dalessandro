@@ -1,46 +1,63 @@
 import CartWidget from "./CartWidget";
 import logo from "../assets/img/lutto-logo.png";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 export default function NavBar() {
   return (
     <nav className="bg-[#212529] text-white flex justify-between items-center font-montserrat p-4">
-      <Link to="/" className="NavBrand">
+      <NavLink to="/" className="NavBrand" end>
         <img src={logo} alt="logo-lutto" className="h-[100px] w-[100px]" />
-      </Link>
+      </NavLink>
       <div>
         <ul className="flex space-x-10">
           <li>
-            <Link
+            <NavLink
               to="/products"
-              className="p-4 hover:text-[#a56565] hover:bg-[#FFFFFF1A] hover:rounded-[5px]"
+              className={({ isActive }) =>
+                isActive
+                  ? 'p-4 text-[#a56565] bg-[#FFFFFF1A] rounded-[5px]'
+                  : 'p-4 hover:text-[#a56565] hover:bg-[#FFFFFF1A] hover:rounded-[5px]'
+              }
+              end
             >
               TODOS LOS PRODUCTOS
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <Link
+            <NavLink
               to="/products/remeras"
-              className="p-4 hover:text-[#a56565] hover:bg-[#FFFFFF1A] hover:rounded-[5px]"
+              className={({ isActive }) =>
+                isActive
+                  ? 'p-4 text-[#a56565] bg-[#FFFFFF1A] rounded-[5px]'
+                  : 'p-4 hover:text-[#a56565] hover:bg-[#FFFFFF1A] hover:rounded-[5px]'
+              }
             >
               REMERAS
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <Link
+            <NavLink
               to="/products/abrigos"
-              className="p-4 hover:text-[#a56565] hover:bg-[#FFFFFF1A] hover:rounded-[5px]"
+              className={({ isActive }) =>
+                isActive
+                  ? 'p-4 text-[#a56565] bg-[#FFFFFF1A] rounded-[5px]'
+                  : 'p-4 hover:text-[#a56565] hover:bg-[#FFFFFF1A] hover:rounded-[5px]'
+              }
             >
               ABRIGOS
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <Link
+            <NavLink
               to="/products/pantalones"
-              className="p-4 hover:text-[#a56565] hover:bg-[#FFFFFF1A] hover:rounded-[5px]"
+              className={({ isActive }) =>
+                isActive
+                  ? 'p-4 text-[#a56565] bg-[#FFFFFF1A] rounded-[5px]'
+                  : 'p-4 hover:text-[#a56565] hover:bg-[#FFFFFF1A] hover:rounded-[5px]'
+              }
             >
               PANTALONES
-            </Link>
+            </NavLink>
           </li>
         </ul>
       </div>

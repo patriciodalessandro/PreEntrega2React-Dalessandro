@@ -1,9 +1,9 @@
-import { getAsyncData } from "../data/getAsyncData";
+import getAsyncData from "../data/database";
 import { useState, useEffect } from "react";
 import ItemList from "./ItemList";
 import { useParams } from "react-router-dom";
 
-export default function ItemListContainer({ greeting }) {
+export default function ItemListContainer() {
   const [products, setProducts] = useState([]);
   const [title, setTitle] = useState("TODOS LOS PRODUCTOS")
   const { category } = useParams();
