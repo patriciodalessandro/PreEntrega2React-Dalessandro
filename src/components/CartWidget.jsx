@@ -6,7 +6,6 @@ import { CartContext } from '../context/cartContext';
 export default function CartWidget() {
   const { cartList } = useContext(CartContext);
 
-  // Calcula el total de items en el carrito sumando las cantidades (count)
   const totalItems = cartList.reduce((acc, item) => acc + item.count, 0);
 
   return (
