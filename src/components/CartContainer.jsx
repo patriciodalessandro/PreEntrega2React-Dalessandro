@@ -101,22 +101,22 @@ const CartContainer = () => {
           </div>
 
           <div className="mt-8 flex justify-between items-center">
-            <div className="flex-1 text-center text-lg font-semibold">Total: ${calculateTotal()}</div>
-          </div>
+            <div className="text-lg font-semibold">Total: ${calculateTotal()}</div>
+            <div className="flex space-x-4">
+              <Link
+                to="/" 
+                className="bg-gray-700 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-gray-800 transition-colors duration-200"
+              >
+                Seguir comprando
+              </Link>
 
-          <div className="mt-6 flex justify-between">
-            <button
-              onClick={handleContinueShopping}
-              className="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600 transition-colors duration-200"
-            >
-              Seguir comprando
-            </button>
-            <button
-              onClick={clearCart}
-              className="bg-gray-700 text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors duration-200"
-            >
-              Vaciar carrito
-            </button>
+              <button
+                onClick={clearCart}
+                className="bg-red-500 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-red-600 transition-colors duration-200"
+              >
+                Vaciar carrito
+              </button>
+            </div>
           </div>
 
           <div className="mt-6 text-center">
