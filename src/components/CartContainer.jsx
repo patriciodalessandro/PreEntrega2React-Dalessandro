@@ -28,7 +28,6 @@ const CartContainer = () => {
       return;
     }
   
-    // Guardar los datos de la compra antes de vaciar el carrito
     const orderData = {
       buyer: { username: userData.username, lastname: userData.lastname, email: userData.email, dni: userData.dni },
       items: [...cartList], 
@@ -41,9 +40,7 @@ const CartContainer = () => {
       setOrderId(newOrderID);
       setIsCheckoutCompleted(true);
   
-      // Limpiar el carrito pero mantener el mensaje de confirmación visible
       clearCart();
-  
     } catch (error) {
       alert("Ocurrió un error al procesar tu compra. Intenta nuevamente.");
     }
@@ -56,12 +53,11 @@ const CartContainer = () => {
     clearCart();
   };
 
-  // Vaciar el carrito cuando se complete la compra
   useEffect(() => {
     if (isCheckoutCompleted) {
-      clearCart();
+      clearCart(); 
     }
-  }, [isCheckoutCompleted, clearCart]);
+  }, [isCheckoutCompleted]); 
 
   return (
     <div className="p-6 bg-gray-50">

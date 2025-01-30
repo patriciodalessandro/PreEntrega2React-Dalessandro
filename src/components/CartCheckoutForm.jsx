@@ -45,7 +45,7 @@ const CartCheckoutForm = ({ userData, onInputChange, handleCheckout }) => {
       <div>
         <label htmlFor="dni" className="block text-lg font-semibold">DNI</label>
         <input
-          type="text"
+          type="number"
           id="dni"
           name="dni"
           value={userData.dni}
