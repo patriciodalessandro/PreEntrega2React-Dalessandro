@@ -18,17 +18,6 @@ La motivación detrás de este proyecto es mejorar la experiencia de compra en l
 - **[TailwindCSS](https://tailwindcss.com/)**: Para el diseño de la interfaz con una estructura de clases utilitarias.
 - **[Firebase](https://firebase.google.com/docs)**: Para la gestión de datos, como la creación de pedidos en la base de datos.
 
----
-
-## Contribuciones
-
-Si deseas contribuir al proyecto, por favor sigue estos pasos:
-
-1. Haz un fork del repositorio.
-2. Crea una rama nueva (`git checkout -b feature/nueva-funcionalidad`).
-3. Haz tus cambios y confirma (`git commit -am 'Agrega nueva funcionalidad'`).
-4. Empuja los cambios a tu fork (`git push origin feature/nueva-funcionalidad`).
-5. Abre un Pull Request.
 
 ---
 
