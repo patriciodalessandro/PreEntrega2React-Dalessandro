@@ -1,3 +1,5 @@
+import React from 'react';
+
 const CartCheckoutForm = ({ userData, onInputChange, handleCheckout }) => {
   return (
     <form onSubmit={handleCheckout} className="space-y-4">
@@ -13,6 +15,7 @@ const CartCheckoutForm = ({ userData, onInputChange, handleCheckout }) => {
           className="mt-2 w-full p-2 border border-gray-300 rounded-lg"
         />
       </div>
+
       <div>
         <label htmlFor="lastname" className="block text-lg font-semibold">Apellido</label>
         <input
@@ -25,6 +28,7 @@ const CartCheckoutForm = ({ userData, onInputChange, handleCheckout }) => {
           className="mt-2 w-full p-2 border border-gray-300 rounded-lg"
         />
       </div>
+
       <div>
         <label htmlFor="email" className="block text-lg font-semibold">Correo electrónico</label>
         <input
@@ -37,6 +41,7 @@ const CartCheckoutForm = ({ userData, onInputChange, handleCheckout }) => {
           className="mt-2 w-full p-2 border border-gray-300 rounded-lg"
         />
       </div>
+
       <div>
         <label htmlFor="dni" className="block text-lg font-semibold">DNI</label>
         <input
@@ -49,6 +54,7 @@ const CartCheckoutForm = ({ userData, onInputChange, handleCheckout }) => {
           className="mt-2 w-full p-2 border border-gray-300 rounded-lg"
         />
       </div>
+
       <div className="mt-4 text-center">
         <button
           type="submit"

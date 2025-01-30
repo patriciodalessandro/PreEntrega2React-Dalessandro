@@ -1,15 +1,14 @@
-import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom"; 
+import React, { useState, useContext, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { CartContext } from "../context/cartContext";
 import { createBuyOrder } from "../data/database";
 import CartCheckoutForm from "./CartCheckoutForm";
 
 const CartContainer = () => {
-  const { cartList, removeItem, clearCart, calculateTotal } = useContext(CartContext);
+  const { cartList, removeItem, clearCart, calculateTotal, addItem } = useContext(CartContext);
 
   const [isBuying, setIsBuying] = useState(false);
   const [userData, setUserData] = useState({ username: "", lastname: "", email: "", dni: "" });
-  const [showConfirmationMessage, setShowConfirmationMessage] = useState(false);
   const [orderId, setOrderId] = useState(null);
   const [isCheckoutCompleted, setIsCheckoutCompleted] = useState(false);
 
@@ -23,118 +22,146 @@ const CartContainer = () => {
 
   const handleCheckout = async (e) => {
     e.preventDefault();
-
+  
     if (cartList.length === 0) {
       alert("Tu carrito está vacío.");
       return;
     }
-
+  
+    // Guardar los datos de la compra antes de vaciar el carrito
     const orderData = {
       buyer: { username: userData.username, lastname: userData.lastname, email: userData.email, dni: userData.dni },
-      items: cartList,
+      items: [...cartList], 
       total: calculateTotal(),
       date: new Date(),
     };
-
+  
     try {
       const newOrderID = await createBuyOrder(orderData);
       setOrderId(newOrderID);
-      setShowConfirmationMessage(true);
       setIsCheckoutCompleted(true);
+  
+      // Limpiar el carrito pero mantener el mensaje de confirmación visible
+      clearCart();
+  
     } catch (error) {
       alert("Ocurrió un error al procesar tu compra. Intenta nuevamente.");
     }
   };
 
   const handleAnotherPurchase = () => {
-    setShowConfirmationMessage(false);
     setIsBuying(false);
     setUserData({ username: "", lastname: "", email: "", dni: "" });
     setIsCheckoutCompleted(false);
     clearCart();
   };
 
-  const handleContinueShopping = () => {
-    setIsBuying(false);
-  };
-
-  if (cartList.length === 0) {
-    return (
-      <div className="text-center p-4">
-        <h2 className="text-xl font-semibold">El carrito está vacío :(</h2>
-        <Link
-          to="/"
-          className="mt-4 inline-flex items-center bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors duration-200"
-        >
-          Volver a la tienda
-        </Link>
-      </div>
-    );
-  }
+  // Vaciar el carrito cuando se complete la compra
+  useEffect(() => {
+    if (isCheckoutCompleted) {
+      clearCart();
+    }
+  }, [isCheckoutCompleted, clearCart]);
 
   return (
     <div className="p-6 bg-gray-50">
       <h2 className="text-2xl font-semibold mb-4">Carrito de compras</h2>
 
       {!isCheckoutCompleted ? (
-        <>
-          <div className="space-y-6">
-            {cartList.map((item) => (
-              <div key={item.id} className="flex items-center justify-between bg-white p-4 rounded-lg shadow-md">
-                <div className="flex items-center space-x-4">
-                  <img src={item.img} alt={item.title} className="w-20 h-20 object-cover rounded-lg" />
-                  <div>
-                    <h3 className="text-lg font-semibold">{item.title}</h3>
-                    <p className="text-sm text-gray-500">{item.count} x ${item.price}</p>
-                    <p className="text-md font-semibold text-gray-800">
-                      Total: ${item.count * item.price}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <button onClick={() => removeItem(item.id)} className="bg-red-500 text-white px-4 py-2 rounded-lg">
-                    Eliminar
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-8 flex items-center justify-between">
+        cartList.length === 0 ? (
+          <div className="text-center p-4">
+            <h2 className="text-xl font-semibold">El carrito está vacío :(</h2>
             <Link
-              to="/" 
-              className="bg-gray-700 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-gray-800 transition-colors duration-200"
+              to="/"
+              className="mt-4 inline-flex items-center bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors duration-200"
             >
-              Seguir comprando
+              Volver a la tienda
             </Link>
+          </div>
+        ) : (
+          <div className="flex space-x-12">
+            <div className="flex-1">
+              <div className="space-y-6">
+                {cartList.map((item) => (
+                  <div key={item.id} className="flex items-center justify-between bg-white p-4 rounded-lg shadow-md">
+                    <div className="flex items-center space-x-4">
+                      <img src={item.img} alt={item.title} className="w-20 h-20 object-cover rounded-lg" />
+                      <div>
+                        <h3 className="text-lg font-semibold">{item.title}</h3>
+                        <p className="text-sm text-gray-500">{item.count} x ${item.price}</p>
+                        <p className="text-md font-semibold text-gray-800">
+                          Total: ${item.count * item.price}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <button 
+                        onClick={() => addItem(item, -1)} 
+                        className={`bg-red-500 text-white px-4 py-2 rounded-lg ${item.count === 1 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        disabled={item.count === 1}
+                      >
+                        -
+                      </button>
+                      <button 
+                        onClick={() => addItem(item, 1)} 
+                        className={`bg-green-500 text-white px-4 py-2 rounded-lg ${item.count === item.stock ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        disabled={item.count === item.stock}
+                      >
+                        +
+                      </button>
+                      <button 
+                        onClick={() => removeItem(item.id)} 
+                        className="bg-red-500 text-white px-4 py-2 rounded-lg"
+                      >
+                        Eliminar
+                      </button>
+                    </div>
 
-            <div className="text-lg font-semibold text-center">
-              Total: ${calculateTotal()}
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-8 flex items-center justify-between">
+                <Link
+                  to="/" 
+                  className="bg-gray-700 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-gray-800 transition-colors duration-200"
+                >
+                  Seguir comprando
+                </Link>
+
+                <div className="text-lg font-semibold text-center">
+                  Total: ${calculateTotal()}
+                </div>
+
+                <button
+                  onClick={clearCart}
+                  className="bg-red-500 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-red-600 transition-colors duration-200"
+                >
+                  Vaciar carrito
+                </button>
+              </div>
+
+              <div className="mt-6 text-center">
+                <button
+                  onClick={() => setIsBuying(true)}
+                  className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors duration-200"
+                >
+                  Iniciar Compra
+                </button>
+              </div>
             </div>
 
-            <button
-              onClick={clearCart}
-              className="bg-red-500 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-red-600 transition-colors duration-200"
+            <div
+              className={`flex-1 ${isBuying ? '' : 'opacity-50 pointer-events-none'}`}
             >
-              Vaciar carrito
-            </button>
-          </div>
-
-          <div className="mt-6 text-center">
-            <button
-              onClick={() => setIsBuying(true)}
-              className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors duration-200"
-            >
-              Iniciar Compra
-            </button>
-          </div>
-
-          {isBuying && (
-            <div className="mt-6">
-              <CartCheckoutForm userData={userData} onInputChange={onInputChange} handleCheckout={handleCheckout} />
+              <CartCheckoutForm 
+                userData={userData} 
+                onInputChange={onInputChange} 
+                handleCheckout={handleCheckout} 
+              />
             </div>
-          )}
-        </>
+          </div>
+        )
       ) : (
         <div className="mt-8 p-6 bg-green-200 text-green-800 rounded-lg shadow-md">
           <h3 className="text-xl font-semibold">Compra realizada con éxito</h3>

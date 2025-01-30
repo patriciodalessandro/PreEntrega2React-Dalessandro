@@ -10,13 +10,24 @@ export const CartContextProvider = ({ children }) => {
   const addItem = (product, count) => {
     setCartList((prevCart) => {
       const existingProduct = prevCart.find((item) => item.id === product.id);
+
       if (existingProduct) {
-        return prevCart.map((item) =>
-          item.id === product.id ? { ...item, count: item.count + count } : item
-        );
+        const newCount = existingProduct.count + count;
+
+        // Restricciones: el mínimo es 1 y el máximo es el stock disponible
+        if (newCount >= 1 && newCount <= product.stock) {
+          return prevCart.map((item) =>
+            item.id === product.id ? { ...item, count: newCount } : item
+          );
+        }
       } else {
-        return [...prevCart, { ...product, count }];
+        // Agregar nuevo producto al carrito si no existe
+        if (count >= 1 && count <= product.stock) {
+          return [...prevCart, { ...product, count }];
+        }
       }
+
+      return prevCart; // No modificar si no se cumple la restricción
     });
   };
 
